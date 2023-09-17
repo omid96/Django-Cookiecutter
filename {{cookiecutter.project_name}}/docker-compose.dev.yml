@@ -1,10 +1,9 @@
 version: "3.9"
 
 services:
-
   db:
-    image: postgres:14.1
-    container_name: postgres
+    image: postgres:15.4
+    container_name: "{{cookiecutter.project_slug}}-postgres"
     ports:
       - 5432:5432
     environment:
@@ -15,18 +14,17 @@ services:
       - postgres-data:/var/lib/postgresql/data/
 
   pgadmin:
-    container_name: pgadmin4_container
-    image: dpage/pgadmin4
-    restart: always
+    container_name: "{{cookiecutter.project_slug}}-pgadmin4_container"
+    image: dpage/pgadmin4:latest
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: 'pg_pass'
+      PGADMIN_DEFAULT_PASSWORD: "pg_pass"
     ports:
       - "5050:80"
 
   rabbitmq:
     image: "rabbitmq:alpine"
-    container_name: rabbitmq
+    container_name: "{{cookiecutter.project_slug}}-rabbitmq"
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
@@ -35,14 +33,12 @@ services:
 
   redis:
     image: redis:7
-    container_name: redis
+    container_name: "{{cookiecutter.project_slug}}-redis"
     ports:
       - 6379:6379
     volumes:
       - redis-data:/data
 
-
 volumes:
-    postgres-data:
-    redis-data:
-
+  postgres-data:
+  redis-data:
