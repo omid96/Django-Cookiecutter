@@ -2,8 +2,8 @@ version: "3.9"
 
 services:
   db:
-    image: postgres:14.1
-    container_name: postgres
+    image: postgres:15.4
+    container_name: "{{cookiecutter.project_slug}}-postgres"
     ports:
       - 5432:5432
     environment:
@@ -13,7 +13,7 @@ services:
 
   rabbitmq:
     image: "rabbitmq:alpine"
-    container_name: rabbitmq
+    container_name: "{{cookiecutter.project_slug}}-rabbitmq"
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
@@ -24,7 +24,7 @@ services:
     build:
       context: .
       dockerfile: docker/production.Dockerfile
-    container_name: django
+    container_name: "{{cookiecutter.project_slug}}-django"
     command: ./docker/web_entrypoint.sh
     environment:
       - DATABASE_URL=psql://{{cookiecutter.postgres_user}}:{{cookiecutter.postgres_password}}@db:5432/{{cookiecutter.project_slug}}
